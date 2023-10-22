@@ -46,7 +46,8 @@ class UsersView(generics.CreateAPIView):
         user = ProfilesSerializer(user, many=False).data
 
         return Response(user, 200)
-
+    
+    #Registrar un nuevo usuario
     @transaction.atomic
     def post(self, request, *args, **kwargs):
 
@@ -81,20 +82,19 @@ class UsersView(generics.CreateAPIView):
 
             #Create a profile for the user
             profile = Profiles.objects.create(user=user,
-                                              matricula=request.data['matricula'],
-                                              curp=request.data['curp'].upper(),
-                                              rfc=request.data['rfc'].upper(),
-                                              fecha_nacimiento=request.data['fecha_nacimiento'],
-                                              edad=request.data['edad'],
-                                              telefono=request.data['telefono'],
-                                              ocupacion=request.data['ocupacion'])
+                                              matricula= request.data["matricula"],
+                                              curp= request.data["curp"].upper(),
+                                              rfc= request.data["rfc"].upper(),
+                                              fecha_nacimiento= request.data["fecha_nacimiento"],
+                                              edad= request.data["edad"],
+                                              telefono= request.data["telefono"],
+                                              ocupacion= request.data["ocupacion"])
             profile.save()
 
             return Response({"profile_created_id": profile.id }, 201)
 
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#Función para editar un usuario
+    #Función para editar un usuario
 class UsersViewEdit(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     def put(self, request, *args, **kwargs):
